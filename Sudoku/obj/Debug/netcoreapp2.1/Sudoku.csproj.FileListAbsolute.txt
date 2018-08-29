@@ -1,0 +1,11 @@
+/Users/air/c-sharp/JustTesting/Sudoku/bin/Debug/netcoreapp2.1/Sudoku.deps.json
+/Users/air/c-sharp/JustTesting/Sudoku/bin/Debug/netcoreapp2.1/Sudoku.runtimeconfig.json
+/Users/air/c-sharp/JustTesting/Sudoku/bin/Debug/netcoreapp2.1/Sudoku.runtimeconfig.dev.json
+/Users/air/c-sharp/JustTesting/Sudoku/bin/Debug/netcoreapp2.1/Sudoku.dll
+/Users/air/c-sharp/JustTesting/Sudoku/bin/Debug/netcoreapp2.1/Sudoku.pdb
+/Users/air/c-sharp/JustTesting/Sudoku/obj/Debug/netcoreapp2.1/Sudoku.csprojAssemblyReference.cache
+/Users/air/c-sharp/JustTesting/Sudoku/obj/Debug/netcoreapp2.1/Sudoku.csproj.CoreCompileInputs.cache
+/Users/air/c-sharp/JustTesting/Sudoku/obj/Debug/netcoreapp2.1/Sudoku.AssemblyInfoInputs.cache
+/Users/air/c-sharp/JustTesting/Sudoku/obj/Debug/netcoreapp2.1/Sudoku.AssemblyInfo.cs
+/Users/air/c-sharp/JustTesting/Sudoku/obj/Debug/netcoreapp2.1/Sudoku.dll
+/Users/air/c-sharp/JustTesting/Sudoku/obj/Debug/netcoreapp2.1/Sudoku.pdb
