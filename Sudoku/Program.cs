@@ -58,7 +58,7 @@ namespace Sudoku
             board.swapRows(0, 1);
 
 
-            for (int i = 0; i < 81 - 30; i++)
+            for (int i = 0; i < 81 - 31; i++)
             {
                 board.deleteRandomCell();
                 board.Print();
