@@ -8,7 +8,7 @@ Simple solution - and very efficient.
 
 # Running
 
-Requires .NET core.
+Requires .NET core - and should run on any platform supported. Devloped using MacOS.
 
 Go to the Sudoku folder and run:
 
