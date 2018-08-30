@@ -6,3 +6,14 @@ Having created software in school that could solve mazes and working with other 
 
 Simple solution - and very efficient.
 
+# Running
+
+Requires .NET core - and should run on any platform supported. Devloped using MacOS.
+
+Go to the Sudoku folder and run:
+
+dotnet run
+
+Currently everything is hardcoded. It first generates the most simple Sudoku you can imagine - then it scramples it and clears 51 cells. The genrated puzzle actually has more solutions, so it does not match the original Sudoku generated before clearing cells.
+
+
