@@ -9,7 +9,7 @@ namespace Sudoku.Tests
         [Fact]
         public void CheckCellInitialzer()
         {
-            CellCoordinate cell = new CellCoordinate();
+            CellCoordinate cell = new CellCoordinate(); 
 
             Assert.Equal(0, cell.row);
             Assert.Equal(0, cell.column);

@@ -7,89 +7,64 @@ namespace Sudoku
         static void Main(string[] args)
         {
 
-
             var board = new SudokuBoard();
 
-            board.Fill();
+            board.GenerateSimple();
+            board.Print();
 
-            board.swapRows(0, 2);
-            board.swapColumns(0, 1);
-            board.swapRows(3, 4);
-            board.swapColumns(3, 5);
-            board.swapRows(7, 8);
-            board.swapRowFields(0, 1);
-            board.swapColumns(7, 8);
-            board.swapRowFields(1, 2);
-            board.swapColumns(1, 2);
+ 
+            board.SwapRows(0, 2);
+            board.SwapColumns(0, 1);
+            board.SwapRows(3, 4);
+            board.SwapColumns(3, 5);
+            board.SwapRows(7, 8);
+            board.SwapRowBlocks(0, 1);
+            board.SwapColumns(7, 8);
+            board.SwapRowBlocks(1, 2);
+            board.SwapColumns(1, 2);
 
-            board.swapRows(0, 2);
-            board.swapColumns(0, 1);
-            board.swapRows(3, 4);
-            board.swapColumns(3, 5);
-            board.swapRows(7, 8);
-            board.swapRowFields(0, 1); board.swapRows(7, 8);
-            board.swapRowFields(0, 1);
-            board.swapColumns(7, 8);
-            board.swapRowFields(1, 2);
-            board.swapColumns(1, 2);
+            board.SwapRows(0, 2);
+            board.SwapColumns(0, 1);
+            board.SwapRows(3, 4);
+            board.SwapColumns(3, 5);
+            board.SwapRows(7, 8);
+            board.SwapRowBlocks(0, 1);
+            board.SwapRows(7, 8);
+            board.SwapRowBlocks(0, 1);
+            board.SwapColumns(7, 8);
+            board.SwapRowBlocks(1, 2);
+            board.SwapColumns(1, 2);
 
-            board.swapRows(0, 2);
-            board.swapColumns(0, 1);
-            board.swapRows(3, 4);
-            board.swapColumns(3, 5);
-            board.swapRows(7, 8);
-            board.swapRowFields(0, 1);
-            board.swapColumns(7, 8);
-            board.swapRowFields(1, 2);
-            board.swapColumns(1, 2);
+            board.SwapRows(0, 2);
+            board.SwapColumns(0, 1);
+            board.SwapRows(3, 4);
+            board.SwapColumns(3, 5);
+            board.SwapRows(7, 8);
+            board.SwapRowBlocks(0, 1);
+            board.SwapColumns(7, 8);
+            board.SwapRowBlocks(1, 2);
+            board.SwapColumns(1, 2);
 
-            board.swapRows(0, 2);
-            board.swapColumns(0, 1);
-            board.swapRows(3, 4);
-            board.swapColumns(3, 5);
-            board.swapRows(7, 8);
-            board.swapRowFields(0, 1);
-            board.swapColumns(7, 8);
-            board.swapRowFields(1, 2);
-            board.swapColumns(1, 2);
+            board.SwapRows(0, 2);
+            board.SwapColumns(0, 1);
+            board.SwapRows(3, 4);
+            board.SwapColumns(3, 5);
+            board.SwapRows(7, 8);
+            board.SwapRowBlocks(0, 1);
+            board.SwapColumns(7, 8);
+            board.SwapRowBlocks(1, 2);
+            board.SwapColumns(1, 2);
 
-            board.swapColumns(0, 1);
-            board.swapColumns(0, 2);
-            board.swapRows(0, 1);
+            board.SwapColumns(0, 1);
+            board.SwapColumns(0, 2);
+            board.SwapRows(0, 1);
 
+            board.DeleteRandomCells(81-30);
+            
+            board.Print();
 
-            for (int i = 0; i < 81 - 30; i++)
-            {
-                board.deleteRandomCell();
-                board.Print();
-            }
-
-
-
-            //            board.setField();
             board.Solve();
 
-
-
-            /* 
-                        for( int i = 0 ; i < 9 ; i++)
-                        if( !board.verifyRow(i) )
-                        {
-                            System.Console.WriteLine("Row "+ (i+1) +" incorrect");
-                        }
-
-                        for( int i = 0 ; i < 9 ; i++)
-                        if( !board.verifyColumn(i) )
-                        {
-                            System.Console.WriteLine("Column "+ (i+1) +" incorrect");
-                        }
-
-                        for( int i = 0 ; i < 9 ; i++)
-                        if( !board.verifyField(i) )
-                        {
-                            System.Console.WriteLine("Field "+ (i+1) +" incorrect");
-                        }
-                        */
         }
     }
 }

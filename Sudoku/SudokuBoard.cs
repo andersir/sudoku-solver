@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Sudoku
@@ -10,7 +11,7 @@ namespace Sudoku
 
         public void Print()
         {
-            System.Threading.Thread.Sleep(10);
+//            System.Threading.Thread.Sleep(1);
             System.Console.Clear();
             /* 
             board[3, 3] = 0;
@@ -39,91 +40,66 @@ namespace Sudoku
 
         }
 
-        public void Fill()
+        public void GenerateSimple()
         {
-            int value = 1;
-
-            for (int i = 0; i < 9; i++)
+            for( int i = 0 ; i < 81 ; i++)
             {
+                int value = i;
+                value += 3*(i/9);   // Shift rows
+                value += i/27;      // Shift on block (3 rows)
+                value %= 9;
+                value ++;
 
-                if (i % 3 == 0 && i != 0)
-                    value++;
-
-                for (int j = 0; j < 9; j++)
-                {
-                    value = ((value - 1) % 9) + 1;
-
-                    board[i, j] = value++;
-
-
-                }
-                value += 3;
-
-
+                board[i/9,i%9] = value;
             }
-
         }
 
-        public bool verifyRow(int rowNumber)
-        {
-            int[] row = new int[9];
 
-            for (int i = 0; i < 9; i++)
+        private bool Verify(Del handler)
+        {
+            HashSet<int> used = new HashSet<int>();
+
+            do
             {
-                if (board[rowNumber, i] == 0)
+                if (IsCellEmpty((CellCoordinate)handler.Target))
                     continue;
-                row[board[rowNumber, i] - 1]++;
-            }
 
-            foreach (int number in row)
-                if (number > 1)
+                if (!used.Add(GetCell((CellCoordinate)handler.Target)))
                     return false;
+
+            } while (handler());
 
             return true;
         }
 
-        public bool verifyColumn(int columnNumber)
+        public bool VerifyRow(int rowNumber)
         {
-            int[] row = new int[9];
+            CellCoordinate cell = new CellCoordinate(rowNumber, 0);
+            Del handler = cell.MoveToNextCellInRow;
 
-            for (int i = 0; i < 9; i++)
-            {
-                if (board[i, columnNumber] == 0)
-                    continue;
-                row[board[i, columnNumber] - 1]++;
-            }
-
-            foreach (int number in row)
-                if (number > 1)
-                    return false;
-
-            return true;
+            return Verify(handler);
         }
 
-        public bool verifyBlock(int fieldNumber)
+        public bool VerifyColumn(int columnNumber)
         {
-            int[] row = new int[9];
+            CellCoordinate cell = new CellCoordinate(0, columnNumber);
+            Del handler = cell.MoveToNextCellInColumn;
 
-            int rowOffset = (fieldNumber / 3) * 3;
-            int columnOffset = (fieldNumber % 3) * 3;
-
-            for (int i = 0; i < 3; i++)
-                for (int j = 0; j < 3; j++)
-                {
-                    if (board[rowOffset + i, columnOffset + j] == 0)
-                        continue;
-
-                    row[board[rowOffset + i, columnOffset + j] - 1]++;
-                }
-
-            foreach (int number in row)
-                if (number > 1)
-                    return false;
-
-            return true;
+            return Verify(handler);
         }
 
-        public void swapRows(int row1, int row2)
+        public bool VerifyBlock(int blockNumber)
+        {
+            int rowOffset = (blockNumber / 3) * 3;
+            int columnOffset = (blockNumber % 3) * 3;
+
+            CellCoordinate cell = new CellCoordinate(rowOffset, columnOffset);
+            Del handler = cell.MoveToNextCellInBlock;
+
+            return Verify(handler);
+        }
+
+        public void SwapRows(int row1, int row2)
         {
             int tmp;
 
@@ -136,7 +112,7 @@ namespace Sudoku
 
         }
 
-        public void swapColumns(int column1, int column2)
+        public void SwapColumns(int column1, int column2)
         {
             int tmp;
 
@@ -149,41 +125,44 @@ namespace Sudoku
 
         }
 
-        public void swapRowFields(int rowField1, int rowField2)
+        public void SwapRowBlocks(int blockRow1, int blockRow2)
         {
-            int rowOffset1 = rowField1 * 3;
-            int rowOffset2 = rowField2 * 3;
+            int rowOffset1 = blockRow1 * 3;
+            int rowOffset2 = blockRow2 * 3;
 
             for (int i = 0; i < 3; i++)
             {
-                swapRows(rowOffset1 + i, rowOffset2 + i);
+                SwapRows(rowOffset1 + i, rowOffset2 + i);
             }
 
 
         }
 
-        public void deleteRandomCell()
+        public void DeleteRandomCells(int numberOfCellsToDelete)
         {
-            Random random = new Random(1);
-
-            int rowNumber;
-            int columnNumber;
-
-            do
-            {
-                rowNumber = random.Next(0, 9);
-                columnNumber = random.Next(0, 9);
-
-            } while (board[rowNumber, columnNumber] == 0);
-
-            board[rowNumber, columnNumber] = 0;
+            
+            foreach (int i in Enumerable.Range(1, numberOfCellsToDelete))
+                DeleteRandomCell();
         }
 
-        public bool verifyBoard()
+        public void DeleteRandomCell()
+        {     
+            CellCoordinate cell = new CellCoordinate();
+     
+            do
+            {
+                cell.Randomize();
+
+            } while ( IsCellEmpty(cell) );
+
+            ClearCell(cell);
+        }
+
+        public bool VerifyBoard()
         {
             for (int i = 0; i < 9; i++)
             {
-                if ((verifyRow(i) & verifyColumn(i) & verifyBlock(i)) == false)
+                if ((VerifyRow(i) & VerifyColumn(i) & VerifyBlock(i)) == false)
                     return false;
             }
             return true;
@@ -203,7 +182,7 @@ namespace Sudoku
                     for (n = 0; n < 9; n++)
                     {
                         board[i, j] = n + 1;
-                        if (!verifyBoard())
+                        if (!VerifyBoard())
                             continue;
 
                         if (setField())
@@ -225,15 +204,21 @@ namespace Sudoku
         {
             CellCoordinate cell = new CellCoordinate();
 
-            fillBoard(cell);
+            FillBoard(cell);
 
         }
 
-        public void setCell(CellCoordinate cell, int value)
+        public void SetCell(CellCoordinate cell, int value)
         {
             board[cell.row, cell.column] = value;
         }
-        public bool increaseCellValue(CellCoordinate cell)
+
+        public int GetCell(CellCoordinate cell)
+        {
+            return board[cell.row, cell.column];
+        }
+
+        public bool IncreaseCellValue(CellCoordinate cell)
         {
             if (board[cell.row, cell.column] < 9)
             {
@@ -246,63 +231,51 @@ namespace Sudoku
             return false;
         }
 
-        public void clearCell(CellCoordinate cell)
+        public void ClearCell(CellCoordinate cell)
         {
             board[cell.row, cell.column] = 0;
         }
-        public void clearCellDebug(CellCoordinate cell)
-        {
-            System.Console.WriteLine(cell.row + " " + cell.column + " -> " + board[cell.row, cell.column]);
-            
-            if ( board[cell.row, cell.column] != 0 )
-                throw new ApplicationException();
 
-            board[cell.row, cell.column] = 0;
-        }
-
-        public bool isCellEmpty(CellCoordinate cell)
+        public bool IsCellEmpty(CellCoordinate cell)
         {
             return board[cell.row, cell.column] == 0;
         }
 
-        public bool trySetCell(CellCoordinate cell, int value)
+        public bool TrySetCell(CellCoordinate cell, int value)
         {
-            setCell(cell, value);
+            SetCell(cell, value);
 
-            return verifyBoard();
-            
+            return VerifyBoard();
+
         }
 
-        public bool fillBoard(CellCoordinate cell)
+        public bool FillBoard(CellCoordinate cell)
         {
 
-            if (isCellEmpty(cell))
+            if (IsCellEmpty(cell))
             {
                 iterations++;
 
                 foreach (int value in Enumerable.Range(1, 9))
                 {
-                    if (!trySetCell(cell, value))
+                    if (!TrySetCell(cell, value))
                         continue;
 
                     Print();
- 
-                    if (fillBoard(cell))
+
+                    if (FillBoard(cell))
                         return true;
-                    
+
                 }
 
-                clearCell(cell);
+                ClearCell(cell);
 
                 return false;
             }
 
-
             if (cell.MoveToNextCellInGrid())
-                return fillBoard(cell);
+                return FillBoard(cell);
             return true;
-
-
 
         }
 
